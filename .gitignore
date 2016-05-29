@@ -1,0 +1,7 @@
+/Tests/app/cache
+/Tests/app/logs
+/vendor
+/composer.lock
+/phpunit.xml
+/clover.xml
+/build

@@ -1,0 +1,3 @@
+services:
+    cmobi_msf.service.loader:
+        class: Cmobi\MicroserviceFrameworkBundle\ServiceLoader
