@@ -1,0 +1,3 @@
+cmobi_rabbitmq:
+    method: default
+    defaults: { _controller: FooBundle:DefaultRpc:default }
