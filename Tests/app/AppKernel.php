@@ -9,7 +9,7 @@ class AppKernel extends Kernel
     {
         return [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
-            new Cmobi\RabbitmqBundle\CmobiRabbitmqBundle()
+            new Cmobi\MicroserviceFrameworkBundle\MicroserviceFrameworkBundle()
         ];
     }
 

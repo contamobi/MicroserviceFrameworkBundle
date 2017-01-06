@@ -1,3 +1,6 @@
 services:
     cmobi_msf.service.loader:
         class: Cmobi\MicroserviceFrameworkBundle\ServiceLoader
+
+    cmobi_msf.message.handler:
+        class: Cmobi\MicroserviceFrameworkBundle\MessageHandler

@@ -19,9 +19,9 @@ class ServiceCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $output->writeln(sprintf('%s %s ................... Running', date('Y-m-d H:i:s'), $this->name));
+        $output->writeln(sprintf('[%s %s] ................... Running', date('Y-m-d H:i:s'), $this->name));
         $loader = $this->getContainer()->get('cmobi_msf.service.loader');
         $loader->run();
-        $output->writeln(sprintf('%s %s ................... Exiting', date('Y-m-d H:i:s'), $this->name));
+        $output->writeln(sprintf('[%s %s] ................... Exiting', date('Y-m-d H:i:s'), $this->name));
     }
 }
