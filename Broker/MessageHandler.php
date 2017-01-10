@@ -1,6 +1,6 @@
 <?php
 
-namespace Cmobi\MicroserviceFrameworkBundle;
+namespace Cmobi\MicroserviceFrameworkBundle\Broker;
 
 use Cmobi\RabbitmqBundle\Queue\QueueServiceInterface;
 use PhpAmqpLib\Message\AMQPMessage;

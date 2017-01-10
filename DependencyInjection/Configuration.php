@@ -10,7 +10,7 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $tree = new TreeBuilder();
-        $rootNode = $tree->root('cmobi_msf');
+        $rootNode = $tree->root('microservice_framework');
         $rootNode
             ->children()
                 ->scalarNode('log_path')->end()
@@ -33,7 +33,6 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->scalarNode('service')->defaultValue('cmobi_msf.message.handler')->end()
                         ->scalarNode('jobs')->defaultValue(1)->end()
-                        ->arrayNode('arguments')->canBeDisabled()->end()
                     ->end()
                 ->end()
             ->end()
@@ -56,7 +55,6 @@ class Configuration implements ConfigurationInterface
                             ->end()
                         ->scalarNode('service')->defaultValue('cmobi_msf.message.handler')->end()
                         ->scalarNode('jobs')->defaultValue(1)->end()
-                        ->arrayNode('arguments')->canBeDisabled()->end()
                     ->end()
                 ->end()
             ->end()
@@ -75,13 +73,12 @@ class Configuration implements ConfigurationInterface
                                     ->scalarNode('exchange')->end()
                                     ->scalarNode('connection')->defaultValue('default')->end()
                                     ->scalarNode('basic_qos')->defaultValue(1)->end()
-                                    ->variableNode('arguments')->defaultNull()->end()
                                     ->scalarNode('exchange_type')->defaultValue('topic')->end()
+                                    ->variableNode('arguments')->defaultNull()->end()
                             ->end()
                         ->end()
                         ->scalarNode('service')->defaultValue('cmobi_msf.message.handler')->end()
                         ->scalarNode('jobs')->defaultValue(1)->end()
-                        ->arrayNode('arguments')->canBeDisabled()->end()
                     ->end()
                 ->end()
             ->end()

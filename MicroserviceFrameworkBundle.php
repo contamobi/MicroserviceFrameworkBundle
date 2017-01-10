@@ -9,6 +9,6 @@ class MicroserviceFrameworkBundle extends Bundle
 {
     public function getContainerExtension()
     {
-        new MicroserviceFrameworkExtension();
+        return new MicroserviceFrameworkExtension();
     }
 }

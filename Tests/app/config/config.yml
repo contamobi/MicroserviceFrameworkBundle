@@ -1,7 +1,7 @@
 framework:
     secret: "Three can keep a secret, if two of them are dead."
 
-cmobi_msf:
+microservice_framework:
     log_path: "%kernel.root_dir%/logs/cmobi_msfbundle.log"
     rpc_servers:
         default:

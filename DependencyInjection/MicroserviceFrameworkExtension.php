@@ -10,9 +10,6 @@ use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
 class MicroserviceFrameworkExtension extends Extension
 {
-    private $container;
-    private $config;
-
     public function load(array $configs, ContainerBuilder $container)
     {
         $fileLocator = new FileLocator(__DIR__ . '/../Resources/config');
@@ -20,28 +17,26 @@ class MicroserviceFrameworkExtension extends Extension
         $loader->load('microserviceframework.yml');
 
         $configuration = $this->getConfiguration($configs, $container);
-        $this->config = $this->processConfiguration($configuration, $configs);
-        $this->container = $container;
-        $this->registerLogger($configs[0]['log_path']);
+        $config = $this->processConfiguration($configuration, $configs);
+        $this->loadRpcServers($config);
+        $this->registerLogger($configs[0]['log_path'], $container);
 
         /* Compile and lock container */
         $container->compile();
     }
 
-    /**
-     * @param $path
-     */
-    public function registerLogger($path)
+    public function loadRpcServers(array $configs)
     {
-        $logDispatcherPass = new LogDispatcherPass($path);
-        $this->getContainer()->addCompilerPass($logDispatcherPass);
+
     }
 
     /**
-     * @return ContainerBuilder
+     * @param $path
+     * @param ContainerBuilder $container
      */
-    private function getContainer()
+    public function registerLogger($path, ContainerBuilder $container)
     {
-        return $this->container;
+        $logDispatcherPass = new LogDispatcherPass($path);
+        $container->addCompilerPass($logDispatcherPass);
     }
 }
