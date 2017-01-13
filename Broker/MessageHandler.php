@@ -14,6 +14,6 @@ class MessageHandler implements QueueServiceInterface
      */
     public function handle(AMQPMessage $message)
     {
-        // TODO: Implement handle() method.
+        return '';
     }
 }

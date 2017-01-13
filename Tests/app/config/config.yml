@@ -3,6 +3,3 @@ framework:
 
 microservice_framework:
     log_path: "%kernel.root_dir%/logs/cmobi_msfbundle.log"
-    rpc_servers:
-        default:
-            queue: { name: 'default_queue' }

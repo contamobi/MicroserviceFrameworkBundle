@@ -17,24 +17,18 @@ class MicroserviceFrameworkExtension extends Extension
         $loader->load('microserviceframework.yml');
 
         $configuration = $this->getConfiguration($configs, $container);
-        $config = $this->processConfiguration($configuration, $configs);
-        $this->loadRpcServers($config);
-        $this->registerLogger($configs[0]['log_path'], $container);
+        $configs = $this->processConfiguration($configuration, $configs);
 
+        $this->registerLogger($container, $configs['log_path']);
         /* Compile and lock container */
         $container->compile();
-    }
-
-    public function loadRpcServers(array $configs)
-    {
-
     }
 
     /**
      * @param $path
      * @param ContainerBuilder $container
      */
-    public function registerLogger($path, ContainerBuilder $container)
+    public function registerLogger(ContainerBuilder $container, $path)
     {
         $logDispatcherPass = new LogDispatcherPass($path);
         $container->addCompilerPass($logDispatcherPass);

@@ -1,4 +1,12 @@
 services:
+    cmobi_msf.rpc_server_listener:
+         class: Cmobi\MicroserviceFrameworkBundle\Listener\RpcServerListener
+         arguments: ["%cmobi_msf.rpc_servers%"]
+         calls:
+             - [setContainer, ["@service_container"]]
+         tags:
+             - { name: kernel.event_listener, event: microservice.start }
+
     cmobi_msf.service.loader:
         class: Cmobi\MicroserviceFrameworkBundle\ServiceLoader
 
