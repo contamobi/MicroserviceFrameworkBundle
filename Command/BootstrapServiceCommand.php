@@ -11,12 +11,11 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class BootstrapServiceCommand extends ContainerAwareCommand
 {
-    private $name;
+    const COMMAND_NAME = 'cmobi:service:bootstrap';
 
     protected function configure()
     {
-        $this->name = 'cmobi:service:bootstrap';
-        $this->setName($this->name)
+        $this->setName(self::COMMAND_NAME)
             ->setDescription('Run single service')
             ->addArgument('service', InputArgument::REQUIRED, 'Symfony service name');
     }
@@ -37,6 +36,6 @@ class BootstrapServiceCommand extends ContainerAwareCommand
         $queue = $serviceBuilder->getQueue();
         $queue->start();
 
-        $output->writeln(sprintf('[%s %s] ................... Exiting', date('Y-m-d H:i:s'), $this->name));
+        $output->writeln(sprintf('[%s %s] ................... Exiting', date('Y-m-d H:i:s'), self::COMMAND_NAME));
     }
 }

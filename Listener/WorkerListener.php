@@ -8,15 +8,15 @@ use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 
-class RpcServerListener
+class WorkerListener
 {
     use ContainerAwareTrait;
 
-    private $servers;
+    private $workers;
 
-    public function __construct(array $servers = [])
+    public function __construct(array $workers = [])
     {
-        $this->servers = $servers;
+        $this->workers = $workers;
     }
 
     public function onMicroserviceStart(Event $event)
@@ -25,12 +25,12 @@ class RpcServerListener
         $kernel = $this->container->get('kernel');
         $pids = [];
 
-        foreach ($this->servers as $server) {
+        foreach ($this->workers as $worker) {
             $process = new Process(
                 sprintf(
                     'php ../app/console %s %s --env=%s',
                     BootstrapServiceCommand::COMMAND_NAME,
-                    $server,
+                    $worker,
                     $kernel->getEnvironment()
                     )
             );

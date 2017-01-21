@@ -21,7 +21,8 @@
         "php-amqplib/php-amqplib": "2.6.3",
         "symfony/console": "^2.8",
         "monolog/monolog": "^1.19",
-        "cmobi/rabbitmq-bundle": "^1.0.0"
+        "cmobi/rabbitmq-bundle": "^1.0.0",
+        "symfony/process": "^3.2"
     },
     "require-dev": {
         "symfony/framework-bundle": "~2.8",
