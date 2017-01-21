@@ -1,6 +1,6 @@
 <?php
 
-namespace Combi\MicroserviceFrameworkBundle\Command;
+namespace Cmobi\MicroserviceFrameworkBundle\Command;
 
 use Cmobi\RabbitmqBundle\Queue\QueueBuilderInterface;
 use Cmobi\RabbitmqBundle\Queue\QueueInterface;
