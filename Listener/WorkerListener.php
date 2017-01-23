@@ -11,19 +11,19 @@ class WorkerListener
 {
     use ContainerAwareTrait;
 
+    private $processManager;
     private $workers;
     private $env;
 
-    public function __construct(array $workers = [], $env)
+    public function __construct(array $workers = [], $env, ProcessManager $manager)
     {
+        $this->processManager = $manager;
         $this->workers = $workers;
         $this->env = $env;
     }
 
     public function onMicroserviceStart(Event $event)
     {
-        $pids = [];
-
         foreach ($this->workers as $worker) {
             $process = new Process(
                 sprintf(
@@ -34,9 +34,15 @@ class WorkerListener
                     )
             );
             $process->start();
-            $pids[] = $process->getPid();
+            $this->getProcessManager()->add($process);
         }
+    }
 
-        return $pids;
+    /**
+     * @return ProcessManager
+     */
+    public function getProcessManager()
+    {
+        return $this->processManager;
     }
 }

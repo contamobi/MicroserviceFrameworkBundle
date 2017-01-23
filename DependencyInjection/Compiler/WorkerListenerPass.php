@@ -13,8 +13,10 @@ class WorkerListenerPass implements CompilerPassInterface
     {
         $workers = [];
 
-        if ($container->hasParameter('cmobi_msf.workers')) {
-            $workers = $container->getParameter('cmobi_msf.workers');
+        $taggedServices = $container->findTaggedServiceIds('cmobi.worker');
+
+        foreach ($taggedServices as $id => $tags) {
+            $workers[] = $id;
         }
         $env = $container->getParameter('kernel.environment');
         $definition = new Definition(

@@ -11,19 +11,19 @@ class RpcServerListener
 {
     use ContainerAwareTrait;
 
+    private $processManager;
     private $servers;
     private $env;
 
-    public function __construct(array $servers = [], $env)
+    public function __construct(array $servers = [], $env, ProcessManager $processManager)
     {
+        $this->processManager = $processManager;
         $this->servers = $servers;
         $this->env = $env;
     }
 
     public function onMicroserviceStart(Event $event)
     {
-        $pids = [];
-
         foreach ($this->servers as $server) {
             $process = new Process(
                 sprintf(
@@ -34,9 +34,15 @@ class RpcServerListener
                     )
             );
             $process->start();
-            $pids[] = $process->getPid();
+            $this->getProcessManager()->add($process);
         }
+    }
 
-        return $pids;
+    /**
+     * @return ProcessManager
+     */
+    public function getProcessManager()
+    {
+        return $this->processManager;
     }
 }

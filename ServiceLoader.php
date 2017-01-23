@@ -11,6 +11,10 @@ class ServiceLoader
     public function run()
     {
         $this->getContainer()->get('debug.event_dispatcher')->dispatch('microservice.start');
+
+        /** @var \SplObjectStorage $processList */
+        $processList = $this->getContainer()->get('cmobi_msf.process.manager')->getProcessList();
+
     }
 
     /**
