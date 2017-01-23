@@ -62,8 +62,8 @@ class RpcServerPass implements CompilerPassInterface
      */
     protected function buildDefinition(ContainerBuilder $container)
     {
-        $connection = $container->getDefinition('cmobi_rabbitmq.connection.manager');
-        $logger = $container->getDefinition('cmobi_rabbitmq.logger');
+        $connection = $container->getDefinition('cmobi_msf.connection.manager');
+        $logger = $container->getDefinition('cmobi_msf.logger');
         $serviceDefinition = $container->getDefinition($this->serviceName);
         $queueBagDefinition = new Definition(
             RpcQueueBag::class,
