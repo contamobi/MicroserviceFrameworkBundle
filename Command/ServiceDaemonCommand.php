@@ -1,6 +1,6 @@
 <?php
 
-namespace Combi\MicroserviceFrameworkBundle\Command;
+namespace Cmobi\MicroserviceFrameworkBundle\Command;
 
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;

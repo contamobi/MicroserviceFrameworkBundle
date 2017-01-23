@@ -2,10 +2,9 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle\Listener;
 
-use Combi\MicroserviceFrameworkBundle\Command\BootstrapServiceCommand;
+use Cmobi\MicroserviceFrameworkBundle\Command\BootstrapServiceCommand;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 
 class RpcServerListener
@@ -13,16 +12,16 @@ class RpcServerListener
     use ContainerAwareTrait;
 
     private $servers;
+    private $env;
 
-    public function __construct(array $servers = [])
+    public function __construct(array $servers = [], $env)
     {
         $this->servers = $servers;
+        $this->env = $env;
     }
 
     public function onMicroserviceStart(Event $event)
     {
-        /** @var KernelInterface $kernel */
-        $kernel = $this->container->get('kernel');
         $pids = [];
 
         foreach ($this->servers as $server) {
@@ -31,7 +30,7 @@ class RpcServerListener
                     'php ../app/console %s %s --env=%s',
                     BootstrapServiceCommand::COMMAND_NAME,
                     $server,
-                    $kernel->getEnvironment()
+                    $this->env
                     )
             );
             $process->start();

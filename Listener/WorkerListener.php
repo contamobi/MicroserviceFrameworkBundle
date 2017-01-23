@@ -2,10 +2,9 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle\Listener;
 
-use Combi\MicroserviceFrameworkBundle\Command\BootstrapServiceCommand;
+use Cmobi\MicroserviceFrameworkBundle\Command\BootstrapServiceCommand;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 
 class WorkerListener
@@ -13,16 +12,16 @@ class WorkerListener
     use ContainerAwareTrait;
 
     private $workers;
+    private $env;
 
-    public function __construct(array $workers = [])
+    public function __construct(array $workers = [], $env)
     {
         $this->workers = $workers;
+        $this->env = $env;
     }
 
     public function onMicroserviceStart(Event $event)
     {
-        /** @var KernelInterface $kernel */
-        $kernel = $this->container->get('kernel');
         $pids = [];
 
         foreach ($this->workers as $worker) {
@@ -31,7 +30,7 @@ class WorkerListener
                     'php ../app/console %s %s --env=%s',
                     BootstrapServiceCommand::COMMAND_NAME,
                     $worker,
-                    $kernel->getEnvironment()
+                    $this->env
                     )
             );
             $process->start();

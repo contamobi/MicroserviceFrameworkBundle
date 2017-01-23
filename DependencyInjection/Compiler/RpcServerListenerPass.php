@@ -11,13 +11,19 @@ class RpcServerListenerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        $servers = [];
+
+        if ($container->hasParameter('cmobi_msf.rpc_servers')) {
+            $servers = $container->getParameter('cmobi_msf.rpc_servers');
+        }
+        $env = $container->getParameter('kernel.environment');
         $definition = new Definition(
             RpcServerListener::class,
             [
-                'servers' => $container->getParameter('cmobi_msf.rpc_servers')
+                'servers' => $servers,
+                'env' => $env
             ]
         );
-        $definition->addMethodCall('setContainer', [$container]);
         $definition->addTag('kernel.event_listener', ['event' => 'microservice.start']);
 
         $container->setDefinition('cmobi_msf.rpc_server_listener', $definition);

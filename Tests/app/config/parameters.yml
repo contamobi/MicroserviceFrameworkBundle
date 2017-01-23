@@ -1,0 +1,11 @@
+parameters:
+    cmobi_msf_host: localhost
+    cmobi_msf_port: 5672
+    cmobi_msf_user: 'guest'
+    cmobi_msf_password: 'guest'
+    cmobi_msf_vhost: '/'
+    cmobi_msf_lazy: false
+    cmobi_msf_connection_timeout: 3
+    cmobi_msf_read_write_timeout: 1160
+    cmobi_msf_keepalive: true
+    cmobi_msf_heartbeat: 540

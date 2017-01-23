@@ -1,6 +1,40 @@
+parameters:
+    cmobi_msf.connection.class: Cmobi\RabbitmqBundle\Connection\CmobiAMQPConnection
+    cmobi_msf.lazy.connection.class: Cmobi\RabbitmqBundle\Connection\CmobiAMQPLazyConnection
+    cmobi_msf.connection.factory.class: Cmobi\RabbitmqBundle\Connection\ConnectionFactory
+    
 services:
+    cmobi_msf.self_resource_checker:
+        class: Symfony\Component\Config\Resource\SelfCheckingResourceChecker
+        public: false
+        tags:
+            - { name: cmobi_msf.config_cache.resource_checker, priority: -990 }
+
+    cmobi_msf.bc_resource_checker:
+        class: Symfony\Component\Config\Resource\BCResourceInterfaceChecker
+        public: false
+        tags:
+            - { name: cmobi_msf.config_cache.resource_checker, priority: -1000 }
+
+    cmobi_msf.config_cache_factory:
+        class: Symfony\Component\Config\ResourceCheckerConfigCacheFactory
+        arguments:
+            - []
+        public: false
+
+    cmobi_msf.connection.manager:
+        class: Cmobi\RabbitmqBundle\Connection\ConnectionManager
+        arguments: ['%cmobi_msf.connection.factories%']
+        calls:
+          - [setContainer, ["@service_container"]]
+
+    cmobi_rabbitmq.message.handler:
+        class: Cmobi\RabbitmqBundle\Queue\BaseQueueService
+        
     cmobi_msf.service.loader:
         class: Cmobi\MicroserviceFrameworkBundle\ServiceLoader
+        calls:
+            - [setContainer, ["@service_container"]]
 
     cmobi_msf.message.handler:
         class: Cmobi\MicroserviceFrameworkBundle\MessageHandler

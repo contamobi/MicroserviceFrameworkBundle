@@ -3,8 +3,15 @@
 namespace Cmobi\MicroserviceFrameworkBundle\DependencyInjection;
 
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\LogDispatcherPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerListenerPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerRegisterPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\SubscriberPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\WorkerListenerPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\WorkerPass;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Loader\YamlFileLoader;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 
@@ -20,8 +27,82 @@ class MicroserviceFrameworkExtension extends Extension
         $configs = $this->processConfiguration($configuration, $configs);
 
         $this->registerLogger($container, $configs['log_path']);
+        $container->addCompilerPass(new RpcServerRegisterPass());
+        $container->addCompilerPass(new RpcServerListenerPass());
+        $container->addCompilerPass(new WorkerListenerPass());
+        $this->loadConnections($container, $configs);
+        $this->loadRpcServers($container, $configs);
+        $this->loadWorkers($container, $configs);
         /* Compile and lock container */
         $container->compile();
+    }
+
+    protected function loadConnections(ContainerBuilder $container, array $configs)
+    {
+        $factories = [];
+
+        foreach ($configs['connections'] as $name => $connection) {
+            $connectionClass = '%cmobi_msf.connection.class%';
+
+            if ($connection['lazy']) {
+                $connectionClass = '%cmobi_msf.lazy.connection.class%';
+            }
+            $definition = new Definition(
+                '%cmobi_msf.connection.factory.class%',
+                [
+                    $connectionClass,
+                    $connection,
+                ]
+            );
+            $factoryName = sprintf('cmobi_msf.connection.factory.%s', $name);
+            $container->setDefinition($factoryName, $definition);
+            $factories[$name] = $factoryName;
+        }
+        $container->setParameter('cmobi_msf.connection.factories', $factories);
+    }
+
+    public function loadRpcServers(ContainerBuilder $container, array $configs)
+    {
+        foreach ($configs['rpc_servers'] as $server) {
+
+            $container->addCompilerPass(new RpcServerPass(
+                $server['queue']['name'],
+                $server['queue']['connection'],
+                $server['service'],
+                $server['queue']['basic_qos'],
+                $server['queue']['durable'],
+                $server['queue']['auto_delete'],
+                $server['queue']['arguments']
+            ));
+        }
+    }
+
+    public function loadWorkers(ContainerBuilder $container, array $configs)
+    {
+        foreach ($configs['workers'] as $worker) {
+            $container->addCompilerPass(new WorkerPass(
+                $worker['queue']['name'],
+                $worker['queue']['connection'],
+                $worker['service'],
+                $worker['queue']['basic_qos'],
+                $worker['queue']['arguments']
+            ));
+        }
+    }
+
+    public function loadSubscribers(ContainerBuilder $container, array $configs)
+    {
+        foreach ($configs['subscribers'] as $subscriber) {
+            $container->addCompilerPass(new SubscriberPass(
+                $subscriber['queue']['exchange'],
+                $subscriber['queue']['exchange_type'],
+                $subscriber['queue']['name'],
+                $subscriber['queue']['connection'],
+                $subscriber['service'],
+                $subscriber['queue']['basic_qos'],
+                $subscriber['queue']['arguments']
+            ));
+        }
     }
 
     /**

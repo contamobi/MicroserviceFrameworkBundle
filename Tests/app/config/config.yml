@@ -1,5 +1,29 @@
+imports:
+    - { resource: 'parameters.yml' }
+
 framework:
     secret: "Three can keep a secret, if two of them are dead."
 
 microservice_framework:
     log_path: "%kernel.root_dir%/logs/cmobi_msfbundle.log"
+    connections:
+        default:
+            host: "%cmobi_msf_host%"
+            port: "%cmobi_msf_port%"
+            user: "%cmobi_msf_user%"
+            password: "%cmobi_msf_password%"
+            vhost: "%cmobi_msf_vhost%"
+            lazy: "%cmobi_msf_lazy%"
+            connection_timeout: "%cmobi_msf_connection_timeout%"
+            read_write_timeout: "%cmobi_msf_read_write_timeout%"
+            # requires php-amqplib v2.4.1+ and PHP5.4+
+            keepalive: "%cmobi_msf_keepalive%"
+            # requires php-amqplib v2.4.1+
+            heartbeat: "%cmobi_msf_heartbeat%"
+    rpc_servers:
+        default:
+            queue: { name: 'default_rpc_queue' }
+    workers:
+        default:
+            queue: { name: 'default_worker_queue' }
+
