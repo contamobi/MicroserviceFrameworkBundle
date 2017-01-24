@@ -25,16 +25,23 @@ class BootstrapServiceCommand extends ContainerAwareCommand
         $serviceName = $input->getArgument('service');
 
         if (! $this->getContainer()->has($serviceName)) {
-            throw new \Exception('Service not found.');
+            $this->getContainer()->get('logger')->error(self::COMMAND_NAME . ' - Service not found.');
+
+            return;
         }
         $serviceBuilder = $this->getContainer()->get($serviceName);
 
         if (! $serviceBuilder instanceof QueueBuilderInterface) {
-            throw new \Exception('Unsupported service builder.');
+            $this->getContainer()->get('logger')->error(self::COMMAND_NAME . ' - Unsupported service builder.');
+            return;
         }
-        /** @var QueueInterface $queue */
-        $queue = $serviceBuilder->getQueue();
-        $queue->start();
+        try {
+            /** @var QueueInterface $queue */
+            $queue = $serviceBuilder->getQueue();
+            $queue->start();
+        } catch (\Exception $e) {
+            $this->getContainer()->get('logger')->error(self::COMMAND_NAME . ' - ' . $e->getMessage());
+        }
 
         $output->writeln(sprintf('[%s %s] ................... Exiting', date('Y-m-d H:i:s'), self::COMMAND_NAME));
     }

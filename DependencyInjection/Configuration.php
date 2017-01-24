@@ -13,6 +13,10 @@ class Configuration implements ConfigurationInterface
         $rootNode = $tree->root('microservice_framework');
         $rootNode
             ->children()
+                ->scalarNode('microservice_name')->end()
+            ->end();
+        $rootNode
+            ->children()
                 ->scalarNode('log_path')->end()
             ->end();
 

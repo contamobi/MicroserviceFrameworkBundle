@@ -1,4 +1,5 @@
 parameters:
+    mic_name: cmobi_test
     cmobi_msf_host: localhost
     cmobi_msf_port: 5672
     cmobi_msf_user: 'guest'

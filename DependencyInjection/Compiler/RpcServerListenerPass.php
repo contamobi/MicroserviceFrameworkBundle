@@ -6,6 +6,7 @@ use Cmobi\MicroserviceFrameworkBundle\Listener\RpcServerListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class RpcServerListenerPass implements CompilerPassInterface
 {
@@ -19,13 +20,12 @@ class RpcServerListenerPass implements CompilerPassInterface
             $servers[] = $id;
         }
         $env = $container->getParameter('kernel.environment');
-        $processDefinition = $container->getDefinition('cmobi_msf.process.manager');
         $definition = new Definition(
             RpcServerListener::class,
             [
                 'servers' => $servers,
                 'env' => $env,
-                'processManager' => $processDefinition
+                'processManager' => new Reference('cmobi_msf.process.manager')
             ]
         );
         $definition->addTag('kernel.event_listener', ['event' => 'microservice.start']);

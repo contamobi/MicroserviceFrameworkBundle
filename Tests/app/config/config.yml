@@ -5,6 +5,7 @@ framework:
     secret: "Three can keep a secret, if two of them are dead."
 
 microservice_framework:
+    microservice_name: "%mic_name%"
     log_path: "%kernel.root_dir%/logs/cmobi_msfbundle.log"
     connections:
         default:

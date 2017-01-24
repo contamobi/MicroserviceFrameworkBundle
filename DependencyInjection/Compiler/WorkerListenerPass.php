@@ -6,6 +6,7 @@ use Cmobi\MicroserviceFrameworkBundle\Listener\WorkerListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class WorkerListenerPass implements CompilerPassInterface
 {
@@ -23,7 +24,8 @@ class WorkerListenerPass implements CompilerPassInterface
             WorkerListener::class,
             [
                 'workers' => $workers,
-                'env' => $env
+                'env' => $env,
+                'processManager' => new Reference('cmobi_msf.process.manager')
             ]
         );
         $definition->addTag('kernel.event_listener', ['event' => 'microservice.start']);

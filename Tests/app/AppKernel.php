@@ -9,6 +9,7 @@ class AppKernel extends Kernel
     {
         return [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
+            new \Lsw\MemcacheBundle\LswMemcacheBundle(),
             new Cmobi\MicroserviceFrameworkBundle\MicroserviceFrameworkBundle()
         ];
     }
