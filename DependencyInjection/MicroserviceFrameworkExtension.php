@@ -72,7 +72,8 @@ class MicroserviceFrameworkExtension extends Extension
                 $server['queue']['basic_qos'],
                 $server['queue']['durable'],
                 $server['queue']['auto_delete'],
-                $server['queue']['arguments']
+                $server['queue']['arguments'],
+                $server['jobs']
             ));
         }
     }
@@ -85,7 +86,8 @@ class MicroserviceFrameworkExtension extends Extension
                 $worker['queue']['connection'],
                 $worker['service'],
                 $worker['queue']['basic_qos'],
-                $worker['queue']['arguments']
+                $worker['queue']['arguments'],
+                $worker['jobs']
             ));
         }
     }
@@ -100,7 +102,8 @@ class MicroserviceFrameworkExtension extends Extension
                 $subscriber['queue']['connection'],
                 $subscriber['service'],
                 $subscriber['queue']['basic_qos'],
-                $subscriber['queue']['arguments']
+                $subscriber['queue']['arguments'],
+                $subscriber['jobs']
             ));
         }
     }

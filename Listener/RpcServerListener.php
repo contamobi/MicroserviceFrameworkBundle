@@ -27,7 +27,7 @@ class RpcServerListener
         foreach ($this->servers as $server) {
             $process = new Process(
                 sprintf(
-                    'php ../app/console %s %s --env=%s',
+                    'php app/console %s %s --env=%s',
                     BootstrapServiceCommand::COMMAND_NAME,
                     $server,
                     $this->env

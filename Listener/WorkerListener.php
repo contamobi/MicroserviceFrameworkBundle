@@ -27,7 +27,7 @@ class WorkerListener
         foreach ($this->workers as $worker) {
             $process = new Process(
                 sprintf(
-                    'php ../app/console %s %s --env=%s',
+                    'php app/console %s %s --env=%s',
                     BootstrapServiceCommand::COMMAND_NAME,
                     $worker,
                     $this->env

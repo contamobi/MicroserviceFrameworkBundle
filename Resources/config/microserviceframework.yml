@@ -28,11 +28,8 @@ services:
         calls:
           - [setContainer, ["@service_container"]]
 
-    cmobi_msf.message.handler:
-        class: Cmobi\RabbitmqBundle\Queue\BaseQueueService
-
     cmobi_msf.process.manager:
         class: Cmobi\MicroserviceFrameworkBundle\Listener\ProcessManager
 
     cmobi_msf.message.handler:
-        class: Cmobi\MicroserviceFrameworkBundle\MessageHandler
+        class: Cmobi\MicroserviceFrameworkBundle\Broker\MessageHandler

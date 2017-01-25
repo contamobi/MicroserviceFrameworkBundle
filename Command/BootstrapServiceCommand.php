@@ -2,7 +2,6 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle\Command;
 
-use Cmobi\RabbitmqBundle\Queue\QueueBuilderInterface;
 use Cmobi\RabbitmqBundle\Queue\QueueInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
@@ -25,19 +24,25 @@ class BootstrapServiceCommand extends ContainerAwareCommand
         $serviceName = $input->getArgument('service');
 
         if (! $this->getContainer()->has($serviceName)) {
-            $this->getContainer()->get('logger')->error(self::COMMAND_NAME . ' - Service not found.');
+            $this->getContainer()->get('logger')->error(
+                sprintf('%s [%s] - Service not found.',
+                    self::COMMAND_NAME,
+                    $serviceName
+                ));
 
             return;
         }
-        $serviceBuilder = $this->getContainer()->get($serviceName);
+        $queue = $this->getContainer()->get($serviceName);
 
-        if (! $serviceBuilder instanceof QueueBuilderInterface) {
-            $this->getContainer()->get('logger')->error(self::COMMAND_NAME . ' - Unsupported service builder.');
+        if (! $queue instanceof QueueInterface) {
+            $this->getContainer()->get('logger')->error(
+                sprintf('%s [%s] - Unsupported service.',
+                    self::COMMAND_NAME,
+                    $serviceName
+                ));
             return;
         }
         try {
-            /** @var QueueInterface $queue */
-            $queue = $serviceBuilder->getQueue();
             $queue->start();
         } catch (\Exception $e) {
             $this->getContainer()->get('logger')->error(self::COMMAND_NAME . ' - ' . $e->getMessage());
