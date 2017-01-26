@@ -16,7 +16,8 @@ class BootstrapServiceCommand extends ContainerAwareCommand
     {
         $this->setName(self::COMMAND_NAME)
             ->setDescription('Run single service')
-            ->addArgument('service', InputArgument::REQUIRED, 'Symfony service name');
+            ->addArgument('service', InputArgument::REQUIRED, 'Symfony service name')
+            ->addArgument('microservice', InputArgument::REQUIRED, 'Microservice name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

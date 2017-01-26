@@ -38,6 +38,20 @@ class ServiceLoader
         return $jobs;
     }
 
+    public function stop()
+    {
+        $getProcess = new Process(sprintf("ps a | grep %s | grep -v grep | awk {'print $1'}", $this->micName));
+
+        $getProcess->run(function ($type, $buffer) {
+
+            if (Process::ERR === $type) {
+                throw new \Exception('Failed list process with error: ' . $buffer);
+            } else {
+                var_dump($buffer);
+            }
+        });
+    }
+
     /**
      * @param $commandLine
      * @return string
