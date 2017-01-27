@@ -25,6 +25,7 @@ class WorkerListenerPass implements CompilerPassInterface
             [
                 'workers' => $workers,
                 'env' => $env,
+                'microserviceName' => $container->getParameter('cmobi_msf.microservice_name'),
                 'processManager' => new Reference('cmobi_msf.process.manager')
             ]
         );

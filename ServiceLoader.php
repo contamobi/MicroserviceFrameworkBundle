@@ -47,10 +47,38 @@ class ServiceLoader
             if (Process::ERR === $type) {
                 throw new \Exception('Failed list process with error: ' . $buffer);
             } else {
-                var_dump($buffer);
+                $pids = implode(' ', explode(PHP_EOL, $buffer));
+                $killProcess = new Process(sprintf('kill -9 %s', $pids));
+
+                $killProcess->run(function ($type, $buffer) use ($pids) {
+
+                    if (Process::ERR === $type) {
+                        throw new \Exception(sprintf(
+                            'Failed kill process with pids [%s] and with error [%s]',
+                            $pids,
+                            $buffer
+                        ));
+                    }
+                });
             }
         });
     }
+
+    public function listServices()
+    {
+        $listProcess = new Process(sprintf(
+            "ps a | grep %s | grep -v grep | awk {'print $1\" \"$8'}",
+            $this->micName
+        ));
+        $listProcess->start();
+
+        while($listProcess->isRunning()) {
+            continue;
+        }
+
+        return $listProcess->getOutput();
+    }
+
 
     /**
      * @param $commandLine

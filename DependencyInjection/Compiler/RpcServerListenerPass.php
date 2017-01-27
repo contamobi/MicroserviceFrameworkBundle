@@ -25,6 +25,7 @@ class RpcServerListenerPass implements CompilerPassInterface
             [
                 'servers' => $servers,
                 'env' => $env,
+                'microserviceName' => $container->getParameter('cmobi_msf.microservice_name'),
                 'processManager' => new Reference('cmobi_msf.process.manager')
             ]
         );

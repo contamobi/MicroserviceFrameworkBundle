@@ -13,12 +13,14 @@ class RpcServerListener
 
     private $processManager;
     private $servers;
+    private $microserviceName;
     private $env;
 
-    public function __construct(array $servers = [], $env, ProcessManager $processManager)
+    public function __construct(array $servers = [], $env, $microserviceName, ProcessManager $processManager)
     {
         $this->processManager = $processManager;
         $this->servers = $servers;
+        $this->microserviceName = $microserviceName;
         $this->env = $env;
     }
 
@@ -27,10 +29,11 @@ class RpcServerListener
         foreach ($this->servers as $server) {
             $process = new Process(
                 sprintf(
-                    'php app/console %s %s --env=%s',
+                    'php app/console %s %s --env=%s --microservice=%s',
                     BootstrapServiceCommand::COMMAND_NAME,
                     $server,
-                    $this->env
+                    $this->env,
+                    $this->microserviceName
                     )
             );
             $process->start();

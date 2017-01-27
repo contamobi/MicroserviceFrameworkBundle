@@ -6,6 +6,7 @@ use Cmobi\RabbitmqBundle\Queue\QueueInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class BootstrapServiceCommand extends ContainerAwareCommand
@@ -17,7 +18,7 @@ class BootstrapServiceCommand extends ContainerAwareCommand
         $this->setName(self::COMMAND_NAME)
             ->setDescription('Run single service')
             ->addArgument('service', InputArgument::REQUIRED, 'Symfony service name')
-            ->addArgument('microservice', InputArgument::REQUIRED, 'Microservice name');
+            ->addOption('microservice', 'mic', InputOption::VALUE_REQUIRED, 'Microservice name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
