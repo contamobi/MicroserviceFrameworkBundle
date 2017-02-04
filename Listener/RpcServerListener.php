@@ -30,11 +30,12 @@ class RpcServerListener implements ServiceListenerInterface
         foreach ($this->servers as $server) {
             $process = new Process(
                 sprintf(
-                    'php app/console %s %s --env=%s --microservice=%s',
+                    'php app/console %s %s --env=%s --microservice=%s >> %s',
                     BootstrapServiceCommand::COMMAND_NAME,
                     $server,
                     $this->env,
-                    $this->microserviceName
+                    $this->microserviceName,
+                    $this->container->get('kernel')->getLogDir() . '/jobs.out'
                     )
             );
             $process->start();
