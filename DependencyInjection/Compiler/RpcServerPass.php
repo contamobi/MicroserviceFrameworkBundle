@@ -8,6 +8,7 @@ use Cmobi\RabbitmqBundle\Transport\Rpc\RpcQueueCallback;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class RpcServerPass implements CompilerPassInterface
 {
@@ -64,7 +65,7 @@ class RpcServerPass implements CompilerPassInterface
     {
         $connection = $container->getDefinition('cmobi_msf.connection.manager');
         $logger = $container->getDefinition('cmobi_msf.logger');
-        $serviceDefinition = $container->getDefinition($this->serviceName);
+        $serviceDefinition = new Reference($this->serviceName);
         $queueBagDefinition = new Definition(
             RpcQueueBag::class,
             [

@@ -3,20 +3,12 @@
 namespace Cmobi\MicroserviceFrameworkBundle\Controller;
 
 use Cmobi\MicroserviceFrameworkBundle\Transport\MsfRequestInterface;
-use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 
 class ControllerResolver
 {
     use ContainerAwareTrait;
-
-    private $logger;
-
-    public function __construct(LoggerInterface $logger = null)
-    {
-        $this->logger = $logger;
-    }
 
     /**
      * @return \Symfony\Component\DependencyInjection\ContainerInterface
@@ -29,8 +21,10 @@ class ControllerResolver
     public function getController(MsfRequestInterface $request)
     {
         if (!$controller = $request->getAttributes()->get('_controller')) {
-            if (null !== $this->logger) {
-                $this->logger->warning('Unable to look for the controller as the "_controller" parameter is missing.');
+            if ($this->getContainer()->has('logger')) {
+                $this->getContainer()->get('logger')->warning(
+                    'Unable to look for the controller as the "_controller" parameter is missing.'
+                );
             }
             return false;
         }

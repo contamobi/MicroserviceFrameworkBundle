@@ -3,6 +3,7 @@
 namespace Cmobi\MicroserviceFrameworkBundle\DependencyInjection;
 
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\LogDispatcherPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\MessageHandlerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerListenerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\ServiceLoaderPass;
@@ -33,6 +34,7 @@ class MicroserviceFrameworkExtension extends Extension
         $this->loadRpcServers($container, $configs);
         $this->loadWorkers($container, $configs);
         $this->loadSubscribers($container, $configs);
+        $container->addCompilerPass(new MessageHandlerPass());
         $container->addCompilerPass(new RpcServerListenerPass());
         $container->addCompilerPass(new WorkerListenerPass());
         $container->addCompilerPass(new SubscriberListenerPass());

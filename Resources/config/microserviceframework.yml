@@ -31,13 +31,7 @@ services:
     cmobi_msf.process.manager:
         class: Cmobi\MicroserviceFrameworkBundle\ProcessManager
 
-
     cmobi_msf.controller.resolver:
         class: Cmobi\MicroserviceFrameworkBundle\Controller\ControllerResolver
-        arguments: ['@logger']
         calls:
             - [setContainer, ["@service_container"]]
-
-    cmobi_msf.message.handler:
-        class: Cmobi\MicroserviceFrameworkBundle\Broker\MessageHandler
-        arguments: ['@cmobi_msf.controller.resolver', '@router.default']

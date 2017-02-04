@@ -9,6 +9,7 @@ use Cmobi\RabbitmqBundle\Transport\Subscriber\SubscriberQueueCallback;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class SubscriberPass implements CompilerPassInterface
 {
@@ -65,7 +66,7 @@ class SubscriberPass implements CompilerPassInterface
     {
         $connection = $container->getDefinition('cmobi_msf.connection.manager');
         $logger = $container->getDefinition('cmobi_msf.logger');
-        $serviceDefinition = $container->getDefinition($this->serviceName);
+        $serviceDefinition = new Reference($this->serviceName);
         $queueBagDefinition = new Definition(
             SubscriberQueueBag::class,
             [

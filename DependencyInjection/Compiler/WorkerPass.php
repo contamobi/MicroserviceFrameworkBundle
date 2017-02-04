@@ -8,6 +8,7 @@ use Cmobi\RabbitmqBundle\Transport\Worker\WorkerQueueCallback;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
 class WorkerPass implements CompilerPassInterface
 {
@@ -58,7 +59,7 @@ class WorkerPass implements CompilerPassInterface
     {
         $connection = $container->getDefinition('cmobi_msf.connection.manager');
         $logger = $container->getDefinition('cmobi_msf.logger');
-        $serviceDefinition = $container->getDefinition($this->serviceName);
+        $serviceDefinition = new Reference($this->serviceName);
         $queueBagDefinition = new Definition(
             WorkerQueueBag::class,
             [

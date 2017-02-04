@@ -7,19 +7,20 @@ use Cmobi\MicroserviceFrameworkBundle\Message\Request;
 use Cmobi\MicroserviceFrameworkBundle\Message\Response;
 use Cmobi\RabbitmqBundle\Queue\QueueServiceInterface;
 use PhpAmqpLib\Message\AMQPMessage;
+use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\HttpFoundation\Response as HttpResponse;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\Router;
 
 class MessageHandler implements QueueServiceInterface
 {
-    private $controllerResolver;
-    private $router;
+    use ContainerAwareTrait;
 
-    public function __construct(ControllerResolver $controllerResolver, Router $router)
+    private $controllerResolver;
+
+    public function __construct(ControllerResolver $controllerResolver)
     {
         $this->controllerResolver = $controllerResolver;
-        $this->router = $router;
     }
 
     /**
@@ -53,7 +54,7 @@ class MessageHandler implements QueueServiceInterface
             $responses[] = $response;
         }
 
-        return $responses;
+        return json_encode($responses);
     }
 
     /**
@@ -74,6 +75,8 @@ class MessageHandler implements QueueServiceInterface
                     if ($route->getOption('method') === $request->getMethod()) {
                         $response = new Response($request->getId());
                         try {
+                            $parameters = $this->getRouter()->match($route->getPath());
+                            $request->attributes->add($parameters);
                             $controller = $this->getControllerResolver()->getController($request);
                             $arguments = $this->getControllerResolver()->getArguments($request, $controller);
                             $origResponse = call_user_func($controller, $arguments);
@@ -83,6 +86,7 @@ class MessageHandler implements QueueServiceInterface
                             }
                             $response->fromArray([
                                 'id' => $request->getId(),
+                                'jsonrpc' => Response::VERSION,
                                 'result' => $origResponse->getContent(),
                                 'error' => $response->getError()
                             ]);
@@ -102,7 +106,7 @@ class MessageHandler implements QueueServiceInterface
      */
     public function getRouter()
     {
-        return $this->router;
+        return $this->getContainer()->get('router');
     }
 
     /**
@@ -111,5 +115,13 @@ class MessageHandler implements QueueServiceInterface
     public function getControllerResolver()
     {
         return $this->controllerResolver;
+    }
+
+    /**
+     * @return \Symfony\Component\DependencyInjection\ContainerInterface
+     */
+    public function getContainer()
+    {
+        return $this->container;
     }
 }
