@@ -8,31 +8,31 @@ use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Process\Process;
 
-class RpcServerListener implements ServiceListenerInterface
+class SubscriberListener implements ServiceListenerInterface
 {
     use ContainerAwareTrait;
 
     private $processManager;
-    private $servers;
+    private $subscribers;
     private $microserviceName;
     private $env;
 
-    public function __construct(array $servers = [], $env, $microserviceName, ProcessManager $processManager)
+    public function __construct(array $subscribers = [], $env, $microserviceName, ProcessManager $manager)
     {
-        $this->processManager = $processManager;
-        $this->servers = $servers;
+        $this->processManager = $manager;
+        $this->subscribers = $subscribers;
         $this->microserviceName = $microserviceName;
         $this->env = $env;
     }
 
     public function onMicroserviceStart(Event $event)
     {
-        foreach ($this->servers as $server) {
+        foreach ($this->subscribers as $subscriber) {
             $process = new Process(
                 sprintf(
                     'php app/console %s %s --env=%s --microservice=%s',
                     BootstrapServiceCommand::COMMAND_NAME,
-                    $server,
+                    $subscriber,
                     $this->env,
                     $this->microserviceName
                     )
@@ -55,6 +55,6 @@ class RpcServerListener implements ServiceListenerInterface
      */
     public function getServices()
     {
-        return $this->servers;
+        return $this->subscribers;
     }
 }

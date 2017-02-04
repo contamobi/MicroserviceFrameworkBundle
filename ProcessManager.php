@@ -1,6 +1,6 @@
 <?php
 
-namespace Cmobi\MicroserviceFrameworkBundle\Listener;
+namespace Cmobi\MicroserviceFrameworkBundle;
 
 use Symfony\Component\Process\Process;
 

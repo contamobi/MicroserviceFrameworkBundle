@@ -2,7 +2,7 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle;
 
-use Cmobi\MicroserviceFrameworkBundle\Listener\ProcessManager;
+use Cmobi\MicroserviceFrameworkBundle\Listener\RpcServerListener;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\Process\Process;
 
@@ -62,6 +62,27 @@ class ServiceLoader
                 });
             }
         });
+    }
+
+    public function status($serviceName = null)
+    {
+        $services = [];
+
+        /** @var RpcServerListener $rpc */
+        $rpc = $this->getContainer()->get('cmobi_msf.rpc_server_listener');
+        array_merge($services, $rpc);
+        $workers = $this->getContainer()->get('cmobi_msf.worker_listener');
+        array_merge($services, $workers);
+        $subscribers = $this->getContainer()->get('cmobi_msf.subscriber_listener');
+        array_merge($services, $subscribers);
+
+        if (! is_null($serviceName)) {
+
+            if (! in_array($serviceName, $services)) {
+                throw new \Exception(sprintf('Service [%s] not found.', $serviceName));
+            }
+
+        }
     }
 
     public function listServices()

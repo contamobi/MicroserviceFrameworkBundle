@@ -3,11 +3,12 @@
 namespace Cmobi\MicroserviceFrameworkBundle\Listener;
 
 use Cmobi\MicroserviceFrameworkBundle\Command\BootstrapServiceCommand;
+use Cmobi\MicroserviceFrameworkBundle\ProcessManager;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\Event;
 use Symfony\Component\Process\Process;
 
-class WorkerListener
+class WorkerListener implements ServiceListenerInterface
 {
     use ContainerAwareTrait;
 
@@ -47,5 +48,13 @@ class WorkerListener
     public function getProcessManager()
     {
         return $this->processManager;
+    }
+
+    /**
+     * @return array
+     */
+    public function getServices()
+    {
+        return $this->workers;
     }
 }

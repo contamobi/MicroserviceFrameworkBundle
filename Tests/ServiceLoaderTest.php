@@ -2,7 +2,7 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle\Tests;
 
-use Cmobi\MicroserviceFrameworkBundle\Listener\ProcessManager;
+use Cmobi\MicroserviceFrameworkBundle\ProcessManager;
 use Cmobi\MicroserviceFrameworkBundle\ServiceLoader;
 
 class ServiceLoaderTest extends BaseTestCase
