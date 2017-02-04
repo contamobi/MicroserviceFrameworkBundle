@@ -84,10 +84,19 @@ class MessageHandler implements QueueServiceInterface
                             if (! $origResponse instanceof HttpResponse) {
                                 $response->setError(sprintf('Invalid response [%s]', serialize($origResponse)));
                             }
+                            $content = $origResponse->getContent();
+
+                            if (is_string($content)) {
+                                $content = json_decode($origResponse->getContent(), true);
+
+                                if (! is_array($content)) {
+                                    $content = $origResponse->getContent();
+                                }
+                            }
                             $response->fromArray([
                                 'id' => $request->getId(),
                                 'jsonrpc' => Response::VERSION,
-                                'result' => $origResponse->getContent(),
+                                'result' => $content,
                                 'error' => $response->getError()
                             ]);
                         } catch (\Exception $e) {
