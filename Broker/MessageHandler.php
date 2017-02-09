@@ -75,10 +75,16 @@ class MessageHandler implements QueueServiceInterface
                     if ($route->getOption('method') === $request->getMethod()) {
                         $response = new Response($request->getId());
                         try {
-                            $request->attributes->set('_controller', $route->getDefault('_controller'));
+                            $parameters = $this->getRouter()->match($route->getPath());
+                            $parameters = [
+                                '_controller' => $parameters['_controller'],
+                                '_route' => $parameters['_route']
+                            ];
+                            array_merge($parameters, $request->getParams());
+                            $request->attributes->add($parameters);
                             $controller = $this->getControllerResolver()->getController($request);
                             $arguments = $this->getControllerResolver()->getArguments($request, $controller);
-                            $origResponse = call_user_func($controller, $arguments);
+                            $origResponse = call_user_func_array($controller, $arguments);
 
                             if (! $origResponse instanceof HttpResponse) {
                                 $response->setError(sprintf('Invalid response [%s]', serialize($origResponse)));
