@@ -19,7 +19,11 @@ class ServiceStartCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = new LockHandler(self::COMMAND_NAME . get_class($this));
+        $lock = new LockHandler(
+            self::COMMAND_NAME
+            . '.'
+            . $this->getContainer()->getParameter('cmobi_msf.microservice_name')
+        );
 
         if (! $lock->lock()) {
             $output->writeln('The command is already running in another process.');
