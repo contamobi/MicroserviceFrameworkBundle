@@ -31,7 +31,7 @@ class RpcServerListener implements ServiceListenerInterface
             $process = new Process(
                 sprintf(
                     'php %s/app/console %s %s --env=%s --microservice=%s >> %s',
-                    $this->container->get('kernel.root_dir'),
+                    $this->container->get('kernel')->getRootDir(),
                     BootstrapServiceCommand::COMMAND_NAME,
                     $server,
                     $this->env,
