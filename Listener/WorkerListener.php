@@ -30,7 +30,8 @@ class WorkerListener implements ServiceListenerInterface
         foreach ($this->workers as $worker) {
             $process = new Process(
                 sprintf(
-                    'php app/console %s %s --env=%s --microservice=%s >> %s',
+                    'php %s/app/console %s %s --env=%s --microservice=%s >> %s',
+                    $this->container->get('kernel.root_dir'),
                     BootstrapServiceCommand::COMMAND_NAME,
                     $worker,
                     $this->env,
