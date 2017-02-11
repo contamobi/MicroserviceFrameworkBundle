@@ -29,6 +29,7 @@ class SubscriberListenerPass implements CompilerPassInterface
                 'processManager' => new Reference('cmobi_msf.process.manager')
             ]
         );
+        $definition->addMethodCall('setContainer', [new Reference('service_container')]);
         $definition->addTag('kernel.event_listener', ['event' => 'microservice.start']);
 
         $container->setDefinition('cmobi_msf.subscriber_listener', $definition);
