@@ -30,7 +30,7 @@ class SubscriberListener implements ServiceListenerInterface
         foreach ($this->subscribers as $subscriber) {
             $process = new Process(
                 sprintf(
-                    'php %s/app/console %s %s --env=%s --microservice=%s >> %s',
+                    'php %s/console %s %s --env=%s --microservice=%s >> %s',
                     $this->container->get('kernel')->getRootDir(),
                     BootstrapServiceCommand::COMMAND_NAME,
                     $subscriber,
