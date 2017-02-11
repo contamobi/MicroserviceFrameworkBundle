@@ -19,7 +19,7 @@ class ServiceStartCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $lock = new LockHandler(self::COMMAND_NAME);
+        $lock = new LockHandler(self::COMMAND_NAME . get_class($this));
 
         if (! $lock->lock()) {
             $output->writeln('The command is already running in another process.');
