@@ -29,10 +29,10 @@ class ServiceStartCommand extends ContainerAwareCommand
             $output->writeln('The command is already running in another process.');
             return;
         }
-        $output->writeln(sprintf('[%s %s] ................... Running', date('Y-m-d H:i:s'), self::COMMAND_NAME));
+        $output->writeln(sprintf('[%s %s] ................... Starting', date('Y-m-d H:i:s'), self::COMMAND_NAME));
         $loader = $this->getContainer()->get('cmobi_msf.service.loader');
         $loader->run();
 
-        $output->writeln(sprintf('[%s %s] ................... Exiting', date('Y-m-d H:i:s'), self::COMMAND_NAME));
+        $output->writeln(sprintf('[%s %s] ................... Running', date('Y-m-d H:i:s'), self::COMMAND_NAME));
     }
 }
