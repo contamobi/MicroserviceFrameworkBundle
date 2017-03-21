@@ -74,6 +74,7 @@ class MessageHandler implements QueueServiceInterface
 
                     if ($route->getOption('method') === $request->getMethod()) {
                         $response = new Response($request->getId());
+                        $content = [];
                         try {
                             $parameters = $this->getRouter()->match($route->getPath());
                             $parameters = [
@@ -88,8 +89,9 @@ class MessageHandler implements QueueServiceInterface
 
                             if (! $origResponse instanceof HttpResponse) {
                                 $response->setError(sprintf('Invalid response [%s]', serialize($origResponse)));
+                            } else {
+                                $content = $origResponse->getContent();
                             }
-                            $content = $origResponse->getContent();
 
                             if (is_string($content)) {
                                 $content = json_decode($origResponse->getContent(), true);
