@@ -34,23 +34,27 @@ class ServiceStartCommand extends ContainerAwareCommand
         $loader = $this->getContainer()->get('cmobi_msf.service.loader');
         $jobs = $loader->run();
 
-        while ($job = array_pop($jobs)) {
+        while ($jobs) {
+
+            $job = array_pop($jobs);
 
             if ($job instanceof Process) {
 
                 if ($job->isRunning()) {
                     $jobs[] = $job;
                 }
-                $this->getContainer()->get('logger')->info($job->getOutput());
+
+                if ($job->getOutput()) {
+                    $this->getContainer()->get('logger')->info($job->getOutput());
+                    $job->clearOutput();
+                }
 
                 if ($job->getErrorOutput()) {
                     $this->getContainer()->get('logger')->error($job->getErrorOutput());
+                    $job->clearErrorOutput();
                 }
-                $job->clearOutput();
-                $job->clearErrorOutput();
             }
         }
-
         $output->writeln(sprintf('[%s %s] ................... Finished', date('Y-m-d H:i:s'), self::COMMAND_NAME));
     }
 }

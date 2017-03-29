@@ -30,8 +30,8 @@ class ServiceLoader
         foreach ($processList as $process) {
 
             if ($process instanceof Process) {
-                $serviceName  = $this->extractServiceName($process->getCommandLine());
-                $jobs[$serviceName][] = $process;
+                //$serviceName  = $this->extractServiceName($process->getCommandLine());
+                $jobs[] = $process;
             }
         }
 
