@@ -38,7 +38,6 @@ class RpcServerListener implements ServiceListenerInterface
                     $this->microserviceName
                     )
             );
-            $process->setTty(posix_isatty(STDOUT));
             $process->start();
             $this->getProcessManager()->add($process);
         }
