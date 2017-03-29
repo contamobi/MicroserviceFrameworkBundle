@@ -107,7 +107,11 @@ class MessageHandler implements QueueServiceInterface
                                 'error' => $response->getError()
                             ]);
                         } catch (\Exception $e) {
-                            $response->setError(sprintf('Failed call method [%s]', $e->getMessage()));
+                            if(is_object(json_decode($e->getMessage()))) {
+                                $response->setError($e->getMessage());
+                            } else {
+                                $response->setError(sprintf('Failed call method [%s]', $e->getMessage()));
+                            }
                         }
                         return $response->toArray();
                     }
