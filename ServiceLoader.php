@@ -31,7 +31,7 @@ class ServiceLoader
 
             if ($process instanceof Process) {
                 $serviceName  = $this->extractServiceName($process->getCommandLine());
-                $jobs[$serviceName][] = $process->getPid();
+                $jobs[$serviceName][] = $process;
             }
         }
 

@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\LockHandler;
+use Symfony\Component\Process\Process;
 
 class ServiceStartCommand extends ContainerAwareCommand
 {
@@ -31,8 +32,25 @@ class ServiceStartCommand extends ContainerAwareCommand
         }
         $output->writeln(sprintf('[%s %s] ................... Starting', date('Y-m-d H:i:s'), self::COMMAND_NAME));
         $loader = $this->getContainer()->get('cmobi_msf.service.loader');
-        $loader->run();
+        $jobs = $loader->run();
 
-        $output->writeln(sprintf('[%s %s] ................... Running', date('Y-m-d H:i:s'), self::COMMAND_NAME));
+        while ($job = array_pop($jobs)) {
+
+            if ($job instanceof Process) {
+
+                if ($job->isRunning()) {
+                    $jobs[] = $job;
+                }
+                $this->getContainer()->get('logger')->info($job->getOutput());
+
+                if ($job->getErrorOutput()) {
+                    $this->getContainer()->get('logger')->error($job->getErrorOutput());
+                }
+                $job->clearOutput();
+                $job->clearErrorOutput();
+            }
+        }
+
+        $output->writeln(sprintf('[%s %s] ................... Finished', date('Y-m-d H:i:s'), self::COMMAND_NAME));
     }
 }
