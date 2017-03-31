@@ -14,7 +14,7 @@ class LoggerRawFormatter implements FormatterInterface
      */
     public function format(array $record)
     {
-        return $record['message'];
+        return $record['level_name'] . ': ' . $record['message'];
     }
 
     /**
