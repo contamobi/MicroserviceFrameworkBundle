@@ -29,8 +29,8 @@ class ServiceStatusCommand extends ContainerAwareCommand
         $statusList = $loader->status($serviceName);
 
         $output->writeln(sprintf(
-            '[%s %s] ................... Status [ service | status ]',
-            date('Y-m-d H:i:s'), self::COMMAND_NAME
+            '[%s] ................... Status [ service | status ]',
+            self::COMMAND_NAME
         ));
         $output->writeln('###################################################################################################');
         $output->writeln($statusList);

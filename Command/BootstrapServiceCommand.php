@@ -51,6 +51,6 @@ class BootstrapServiceCommand extends ContainerAwareCommand
             $output->writeln(sprintf('error [%s] - [%s]', self::COMMAND_NAME, $e->getMessage()));
         }
 
-        $output->writeln(sprintf('[%s %s] [%s %s] ................... Exiting Exiting', date('Y-m-d H:i:s'), self::COMMAND_NAME));
+        $output->writeln(sprintf('[%s] ................... Exiting Exiting', self::COMMAND_NAME));
     }
 }

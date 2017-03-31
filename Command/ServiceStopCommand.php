@@ -27,10 +27,10 @@ class ServiceStopCommand extends ContainerAwareCommand
             $output->writeln('The command is already running in another process.');
             return;
         }
-        $output->writeln(sprintf('[%s %s] ................... Stopping', date('Y-m-d H:i:s'), self::COMMAND_NAME));
+        $output->writeln(sprintf('[%s] ................... Stopping', self::COMMAND_NAME));
         $loader = $this->getContainer()->get('cmobi_msf.service.loader');
         $loader->stop();
 
-        $output->writeln(sprintf('[%s %s] ................... Stopped!', date('Y-m-d H:i:s'), self::COMMAND_NAME));
+        $output->writeln(sprintf('[%s] ................... Stopped!', self::COMMAND_NAME));
     }
 }

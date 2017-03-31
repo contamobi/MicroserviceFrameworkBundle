@@ -22,8 +22,8 @@ class ServiceListCommand extends ContainerAwareCommand
         $process = $loader->listServices();
 
         $output->writeln(sprintf(
-            '[%s %s] ................... Process list [pid  | service job]',
-            date('Y-m-d H:i:s'), self::COMMAND_NAME)
+            '[%s] ................... Process list [pid  | service job]',
+            self::COMMAND_NAME)
         );
         $output->writeln('###################################################################################################');
         $output->writeln($process);

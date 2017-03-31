@@ -4,6 +4,9 @@ parameters:
     cmobi_msf.connection.factory.class: Cmobi\RabbitmqBundle\Connection\ConnectionFactory
     
 services:
+    cmobi_msf.logger.raw:
+        class: Cmobi\MicroserviceFrameworkBundle\Logger\LoggerRawFormatter
+
     cmobi_msf.self_resource_checker:
         class: Symfony\Component\Config\Resource\SelfCheckingResourceChecker
         public: false
