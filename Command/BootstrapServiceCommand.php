@@ -45,10 +45,10 @@ class BootstrapServiceCommand extends ContainerAwareCommand
             return;
         }
         try {
-            $this->getContainer()->get('logger')->info('Starting ...................: ' . $serviceName);
+            $output->writeln(sprintf('Starting ...................: %s', $serviceName));
             $queue->start();
         } catch (\Exception $e) {
-            $this->getContainer()->get('logger')->error(self::COMMAND_NAME . ' - ' . $e->getMessage());
+            $output->writeln(sprintf('error [%s] - [%s]', self::COMMAND_NAME, $e->getMessage()));
         }
 
         $output->writeln(sprintf('[%s %s] [%s %s] ................... Exiting Exiting', date('Y-m-d H:i:s'), self::COMMAND_NAME));

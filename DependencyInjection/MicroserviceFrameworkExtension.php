@@ -2,7 +2,6 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle\DependencyInjection;
 
-use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\LogDispatcherPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\MessageHandlerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerListenerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerPass;
@@ -29,7 +28,6 @@ class MicroserviceFrameworkExtension extends Extension
         $configs = $this->processConfiguration($configuration, $configs);
         $container->setParameter('cmobi_msf.microservice_name', $configs['microservice_name']);
         $container->addCompilerPass(new ServiceLoaderPass());
-        $this->registerLogger($container, $configs['log_path']);
         $this->loadConnections($container, $configs);
         $this->loadRpcServers($container, $configs);
         $this->loadWorkers($container, $configs);
@@ -111,15 +109,5 @@ class MicroserviceFrameworkExtension extends Extension
                 $subscriber['jobs']
             ));
         }
-    }
-
-    /**
-     * @param $path
-     * @param ContainerBuilder $container
-     */
-    public function registerLogger(ContainerBuilder $container, $path)
-    {
-        $logDispatcherPass = new LogDispatcherPass($path);
-        $container->addCompilerPass($logDispatcherPass);
     }
 }

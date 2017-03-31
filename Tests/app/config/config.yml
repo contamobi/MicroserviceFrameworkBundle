@@ -6,7 +6,6 @@ framework:
 
 microservice_framework:
     microservice_name: "%mic_name%"
-    log_path: "%kernel.root_dir%/logs/cmobi_msfbundle.log"
     connections:
         default:
             host: "%cmobi_msf_host%"

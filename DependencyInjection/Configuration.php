@@ -15,10 +15,6 @@ class Configuration implements ConfigurationInterface
             ->children()
                 ->scalarNode('microservice_name')->end()
             ->end();
-        $rootNode
-            ->children()
-                ->scalarNode('log_path')->end()
-            ->end();
 
         $rootNode->fixXmlConfig('connection')
             ->children()

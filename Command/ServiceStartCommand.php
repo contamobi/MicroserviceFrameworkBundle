@@ -36,12 +36,12 @@ class ServiceStartCommand extends ContainerAwareCommand
 
         while ($jobs) {
 
-            $job = array_pop($jobs);
+            $job = array_shift($jobs);
 
             if ($job instanceof Process) {
 
                 if ($job->isRunning()) {
-                    $jobs[] = $job;
+                    array_push($jobs, $job);
                 }
 
                 if ($job->getOutput()) {

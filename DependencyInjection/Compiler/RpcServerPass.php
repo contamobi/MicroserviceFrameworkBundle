@@ -64,7 +64,6 @@ class RpcServerPass implements CompilerPassInterface
     protected function buildDefinition(ContainerBuilder $container)
     {
         $connection = $container->getDefinition('cmobi_msf.connection.manager');
-        $logger = $container->getDefinition('cmobi_msf.logger');
         $serviceDefinition = new Reference($this->serviceName);
         $queueBagDefinition = new Definition(
             RpcQueueBag::class,
@@ -87,7 +86,6 @@ class RpcServerPass implements CompilerPassInterface
             [
                 'connectionManager' => $connection,
                 'queueBag' => $queueBagDefinition,
-                'logger' => $logger,
                 'connectionName' => $this->connectionName,
                 'callback' => $queueCallbackDefinition
             ]
