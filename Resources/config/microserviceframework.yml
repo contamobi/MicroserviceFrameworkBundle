@@ -6,6 +6,7 @@ parameters:
 services:
     cmobi_msf.logger.raw:
         class: Cmobi\MicroserviceFrameworkBundle\Logger\LoggerRawFormatter
+        arguments: ['%mic_name%']
 
     cmobi_msf.self_resource_checker:
         class: Symfony\Component\Config\Resource\SelfCheckingResourceChecker
