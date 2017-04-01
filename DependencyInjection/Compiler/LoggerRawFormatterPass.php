@@ -9,20 +9,10 @@ use Symfony\Component\DependencyInjection\Definition;
 
 class LoggerRawFormatterPass implements CompilerPassInterface
 {
-    private $serviceName;
-
-    public function __construct($serviceName)
-    {
-        $this->serviceName = $serviceName;
-    }
 
     public function process(ContainerBuilder $container)
     {
-        $definition = new Definition(
-            LoggerRawFormatter::class,
-            [
-                'microservicename' => $this->serviceName
-            ]);
+        $definition = new Definition(LoggerRawFormatter::class);
 
         $container->setDefinition('cmobi_msf.logger.raw', $definition);
     }

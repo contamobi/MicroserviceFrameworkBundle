@@ -6,12 +6,6 @@ use Monolog\Formatter\FormatterInterface;
 
 class LoggerRawFormatter implements FormatterInterface
 {
-    private $microserviceName;
-
-    public function __construct($microservicename)
-    {
-        $this->microserviceName = $microservicename;
-    }
 
     /**
      * Formats a log record.
@@ -21,7 +15,7 @@ class LoggerRawFormatter implements FormatterInterface
      */
     public function format(array $record)
     {
-        return $this->microserviceName . ' - ' . $record['level_name'] . ': ' . $record['message'] . PHP_EOL;
+        return $record['level_name'] . ': ' . $record['message'] . PHP_EOL;
     }
 
     /**

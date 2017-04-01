@@ -33,7 +33,7 @@ class MicroserviceFrameworkExtension extends Extension
         $this->loadRpcServers($container, $configs);
         $this->loadWorkers($container, $configs);
         $this->loadSubscribers($container, $configs);
-        $container->addCompilerPass(new LoggerRawFormatterPass($configs['microservice_name']));
+        $container->addCompilerPass(new LoggerRawFormatterPass());
         $container->addCompilerPass(new MessageHandlerPass());
         $container->addCompilerPass(new RpcServerListenerPass());
         $container->addCompilerPass(new WorkerListenerPass());
