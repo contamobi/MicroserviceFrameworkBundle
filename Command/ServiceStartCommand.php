@@ -44,6 +44,10 @@ class ServiceStartCommand extends ContainerAwareCommand
                     array_push($jobs, $job);
                 }
 
+                if (count($jobs) < (count($jobs) - 2)) {
+                    $this->getContainer()->get('logger')->error('Degraded service.');die;
+                }
+
                 if ($job->getOutput()) {
                     $this->getContainer()->get('logger')->info($job->getOutput());
                     $job->clearOutput();
