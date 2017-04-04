@@ -36,6 +36,10 @@ class MessageHandler implements QueueServiceInterface
             $requests = json_decode($body, true);
             $routes = $this->getRouter()->getRouteCollection()->all();
 
+            if (! is_array($requests)) {
+                throw new \Exception(sprintf('Invalid request [%s]', $body));
+            }
+
             foreach ($requests as $requestsArr) {
 
                 if (! is_array($requestsArr)) {
