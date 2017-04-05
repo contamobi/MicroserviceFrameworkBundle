@@ -30,7 +30,7 @@ class RpcServerListener implements ServiceListenerInterface
         foreach ($this->servers as $server) {
             $process = new Process(
                 sprintf(
-                    'php %s/console %s %s --env=%s --microservice=%s',
+                    'php %s/console %s %s --env=%s --microservice=%s >> /proc/$$/fd/1',
                     $this->container->get('kernel')->getRootDir(),
                     BootstrapServiceCommand::COMMAND_NAME,
                     $server,

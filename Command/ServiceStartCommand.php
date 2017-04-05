@@ -32,33 +32,7 @@ class ServiceStartCommand extends ContainerAwareCommand
         }
         $output->writeln(sprintf('[%s] ................... Starting', self::COMMAND_NAME));
         $loader = $this->getContainer()->get('cmobi_msf.service.loader');
-        $jobs = $loader->run();
-
-        while ($jobs) {
-
-            $job = array_shift($jobs);
-
-            if ($job instanceof Process) {
-
-                if ($job->isRunning()) {
-                    array_push($jobs, $job);
-                }
-
-                if (count($jobs) < (count($jobs) - 2)) {
-                    $this->getContainer()->get('logger')->error('Degraded service.');die;
-                }
-
-                if ($job->getOutput()) {
-                    $this->getContainer()->get('logger')->info($job->getOutput());
-                    $job->clearOutput();
-                }
-
-                if ($job->getErrorOutput()) {
-                    $this->getContainer()->get('logger')->error($job->getErrorOutput());
-                    $job->clearErrorOutput();
-                }
-            }
-        }
+        $loader->run();
         $output->writeln(sprintf('[%s] ................... Finished', self::COMMAND_NAME));
     }
 }
