@@ -2,6 +2,7 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle\DependencyInjection;
 
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\JsonExceptionListenerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\LoggerRawFormatterPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\MessageHandlerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerListenerPass;
@@ -38,6 +39,7 @@ class MicroserviceFrameworkExtension extends Extension
         $container->addCompilerPass(new RpcServerListenerPass());
         $container->addCompilerPass(new WorkerListenerPass());
         $container->addCompilerPass(new SubscriberListenerPass());
+        $container->addCompilerPass(new JsonExceptionListenerPass());
         /* Compile and lock container */
         $container->compile();
     }
