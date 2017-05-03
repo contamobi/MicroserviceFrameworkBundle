@@ -12,12 +12,14 @@ class JsonExceptionListenerPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $definition = new Definition(JsonExceptionListener::class);
-        $definition->setTags([
-            'name' => 'kernel.event_listener',
-            'event' => 'kernel.exception',
-            'method' => 'onKernelException',
-            'priority' => 200
-        ]);
+        $definition->addTag(
+            'kernel.event_listener',
+            [
+                'event' => 'kernel.exception',
+                'method' => 'onKernelException',
+                'priority' => 200
+            ]);
+
         $container->setDefinition('cmobi_msf.json_exception_listener', $definition);
     }
 }
