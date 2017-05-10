@@ -12,6 +12,13 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
  */
 class JsonExceptionListener
 {
+    private $env;
+
+    public function __construct($environment)
+    {
+        $this->env = $environment;
+    }
+
     /**
      * @param GetResponseForExceptionEvent $event
      */
@@ -30,6 +37,10 @@ class JsonExceptionListener
                 'message' => $exception->getMessage()
             ]
         ];
+
+         if ($this->env !== 'prod') {
+            $data['error']['strace'] = $exception->getTraceAsString();
+        }
         $response = new JsonResponse($data);
         $event->setResponse($response);
     }

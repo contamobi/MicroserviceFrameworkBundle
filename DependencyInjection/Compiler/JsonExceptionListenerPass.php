@@ -11,7 +11,9 @@ class JsonExceptionListenerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = new Definition(JsonExceptionListener::class);
+        $definition = new Definition(JsonExceptionListener::class, [
+            'environment' => $container->getParameter("kernel.environment")
+        ]);
         $definition->addTag(
             'kernel.event_listener',
             [
