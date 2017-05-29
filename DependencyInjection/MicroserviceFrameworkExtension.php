@@ -2,9 +2,12 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle\DependencyInjection;
 
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\HealthCheckerServicePass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\JsonExceptionListenerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\LoggerRawFormatterPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\LogMicroserviceExceptionListenerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\MessageHandlerPass;
+use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\MonologPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerListenerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\RpcServerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\ServiceLoaderPass;
@@ -34,12 +37,15 @@ class MicroserviceFrameworkExtension extends Extension
         $this->loadRpcServers($container, $configs);
         $this->loadWorkers($container, $configs);
         $this->loadSubscribers($container, $configs);
+        $container->addCompilerPass(new MonologPass($configs['logger']['handlers']));
         $container->addCompilerPass(new LoggerRawFormatterPass());
         $container->addCompilerPass(new MessageHandlerPass());
         $container->addCompilerPass(new RpcServerListenerPass());
         $container->addCompilerPass(new WorkerListenerPass());
         $container->addCompilerPass(new SubscriberListenerPass());
         $container->addCompilerPass(new JsonExceptionListenerPass());
+        $container->addCompilerPass(new LogMicroserviceExceptionListenerPass());
+        $container->addCompilerPass(new HealthCheckerServicePass());
         /* Compile and lock container */
         $container->compile();
     }
@@ -48,7 +54,7 @@ class MicroserviceFrameworkExtension extends Extension
     {
         $factories = [];
 
-        foreach ($configs['connections'] as $name => $connection) {
+        foreach ($configs['rabbitmq_connections'] as $name => $connection) {
             $connectionClass = '%cmobi_msf.connection.class%';
 
             if ($connection['lazy']) {

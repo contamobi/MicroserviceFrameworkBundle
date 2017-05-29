@@ -2,11 +2,20 @@ imports:
     - { resource: 'parameters.yml' }
 
 framework:
+    test: ~
     secret: "Three can keep a secret, if two of them are dead."
+    router:
+        resource: "%kernel.root_dir%/config/routing.yml"
+        strict_requirements: ~
 
 microservice_framework:
     microservice_name: "%mic_name%"
-    connections:
+    logger:
+        handlers:
+           default:
+               type: console
+               level: debug
+    rabbitmq_connections:
         default:
             host: "%cmobi_msf_host%"
             port: "%cmobi_msf_port%"

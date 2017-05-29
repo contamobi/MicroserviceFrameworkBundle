@@ -3,13 +3,10 @@
 namespace Cmobi\MicroserviceFrameworkBundle\Listener;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
-/**
- * Class JsonExceptionListener
- * @package ApiBundle\Listener
- */
 class JsonExceptionListener
 {
     private $env;
@@ -25,11 +22,12 @@ class JsonExceptionListener
     public function onKernelException(GetResponseForExceptionEvent $event)
     {
         $exception = $event->getException();
-        $statusCode = null;
+        $statusCode = Response::HTTP_INTERNAL_SERVER_ERROR;
 
         if ($exception instanceof HttpException) {
             $statusCode = $exception->getStatusCode();
         }
+
         $data = [
             'error' => [
                 'exception_code' => $exception->getCode(),

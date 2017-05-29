@@ -35,3 +35,6 @@ services:
         class: Cmobi\MicroserviceFrameworkBundle\Controller\ControllerResolver
         calls:
             - [setContainer, ["@service_container"]]
+
+    cmobi_msf.stdout.handler:
+        class: Cmobi\MicroserviceFrameworkBundle\Logger\StdoutHandler

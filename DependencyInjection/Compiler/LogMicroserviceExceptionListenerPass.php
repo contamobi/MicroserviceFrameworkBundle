@@ -3,25 +3,28 @@
 namespace Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler;
 
 use Cmobi\MicroserviceFrameworkBundle\Listener\JsonExceptionListener;
+use Cmobi\MicroserviceFrameworkBundle\Listener\LogMicroserviceExceptionListener;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Reference;
 
-class JsonExceptionListenerPass implements CompilerPassInterface
+class LogMicroserviceExceptionListenerPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $definition = new Definition(JsonExceptionListener::class, [
-            'environment' => $container->getParameter("kernel.environment")
+        $definition = new Definition(LogMicroserviceExceptionListener::class, [
+            'environment' => $container->getParameter("kernel.environment"),
+            'logger' => new Reference('cmobi_msf.logger')
         ]);
         $definition->addTag(
             'kernel.event_listener',
             [
                 'event' => 'kernel.exception',
                 'method' => 'onKernelException',
-                'priority' => -255
+                'priority' => 255
             ]);
 
-        $container->setDefinition('cmobi_msf.json_exception_listener', $definition);
+        $container->setDefinition('cmobi_msf.microservice_exception_listener', $definition);
     }
 }

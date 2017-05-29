@@ -1,0 +1,3 @@
+health_check:
+    path: /health-check
+    defaults: { _controller: MicroserviceFrameworkBundle:HealthCheck:index }
