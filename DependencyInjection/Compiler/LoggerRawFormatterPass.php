@@ -14,6 +14,6 @@ class LoggerRawFormatterPass implements CompilerPassInterface
     {
         $definition = new Definition(LoggerRawFormatter::class);
 
-        $container->setDefinition('cmobi_msf.logger_formater.raw', $definition);
+        $container->setDefinition('cmobi_msf.logger_format.raw', $definition);
     }
 }

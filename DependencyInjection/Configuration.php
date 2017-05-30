@@ -35,6 +35,7 @@ class Configuration implements ConfigurationInterface
                                     ->then(function ($v) { return strtolower($v); })
                                 ->end()
                             ->end()
+                            ->scalarNode('formatter')->end()
                             ->scalarNode('level')->defaultValue('DEBUG')->end()
                             ->booleanNode('bubble')->defaultTrue()->end()
                             ->scalarNode('path')->defaultValue('%kernel.logs_dir%/%kernel.environment%.log')->end()

@@ -15,6 +15,7 @@ microservice_framework:
            default:
                type: console
                level: debug
+               formatter: cmobi_msf.logger_format.raw
     rabbitmq_connections:
         default:
             host: "%cmobi_msf_host%"

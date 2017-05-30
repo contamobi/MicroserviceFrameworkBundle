@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 
 class LoggerService
 {
-    const LOG_FORMAT = '[ KEY:%s - %s ]';
+    const LOG_FORMAT = ' [KEY:%s] [%s] ';
 
     private $channel;
 
@@ -23,9 +23,8 @@ class LoggerService
             'message' => $exception->getMessage(),
             'line_info' => $exception->getLineInfo()
         ];
-
         if ($strace) {
-            $message['strace']= $exception->getTraceAsString();
+            $message['strace'] = $exception->getTraceAsString();
         }
         try {
             $message = json_encode($message);
