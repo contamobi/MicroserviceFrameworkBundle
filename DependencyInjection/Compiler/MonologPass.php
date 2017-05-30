@@ -110,6 +110,8 @@ class MonologPass implements CompilerPassInterface
                     $handler['logopts'],
                 ]);
                 break;
+            case 'stdout':
+                break;
             default:
                 throw new \InvalidArgumentException(sprintf(
                     'Invalid handler type "%s" given for handler "%s"',
