@@ -7,7 +7,7 @@ use Psr\Log\LoggerInterface;
 
 class LoggerService
 {
-    const LOG_FORMAT = ' [KEY:%s] [%s] ';
+    const LOG_FORMAT = '[KEY:%s] [%s] ';
 
     private $channel;
 

@@ -19,7 +19,7 @@ class JsonExceptionListenerPass implements CompilerPassInterface
             [
                 'event' => 'kernel.exception',
                 'method' => 'onKernelException',
-                'priority' => -255
+                'priority' => 200
             ]);
 
         $container->setDefinition('cmobi_msf.json_exception_listener', $definition);
