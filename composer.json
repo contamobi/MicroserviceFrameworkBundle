@@ -19,7 +19,7 @@
         "symfony/http-kernel": "2.8.*",
         "symfony/console": "^2.8",
         "monolog/monolog": "^1.22",
-        "cmobi/rabbitmq-bundle": "dev-master@dev",
+        "cmobi/rabbitmq-bundle": "v1.2.13",
         "symfony/process": "^2.8",
         "leaseweb/memcache-bundle": "^2.1",
         "symfony/monolog-bridge": "^3.2"
