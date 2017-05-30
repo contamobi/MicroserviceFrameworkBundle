@@ -43,8 +43,8 @@ class MicroserviceFrameworkExtension extends Extension
         $container->addCompilerPass(new RpcServerListenerPass());
         $container->addCompilerPass(new WorkerListenerPass());
         $container->addCompilerPass(new SubscriberListenerPass());
-        $container->addCompilerPass(new JsonExceptionListenerPass());
         $container->addCompilerPass(new LogMicroserviceExceptionListenerPass());
+        $container->addCompilerPass(new JsonExceptionListenerPass());
         $container->addCompilerPass(new HealthCheckerServicePass());
         /* Compile and lock container */
         $container->compile();

@@ -22,7 +22,7 @@ class LogMicroserviceExceptionListenerPass implements CompilerPassInterface
             [
                 'event' => 'kernel.exception',
                 'method' => 'onKernelException',
-                'priority' => 200
+                'priority' => 201
             ]);
 
         $container->setDefinition('cmobi_msf.microservice_exception_listener', $definition);
