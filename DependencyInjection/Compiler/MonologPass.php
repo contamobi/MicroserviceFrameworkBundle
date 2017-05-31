@@ -3,6 +3,7 @@
 namespace Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler;
 
 use Cmobi\MicroserviceFrameworkBundle\Exception\MicroserviceException;
+use Cmobi\MicroserviceFrameworkBundle\Logger\GelfLogger;
 use Cmobi\MicroserviceFrameworkBundle\Logger\LoggerService;
 use Monolog\Logger;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
@@ -26,11 +27,20 @@ class MonologPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         foreach ($this->handlers as $name => $handler) {
-            $id = $this->buildHandler($container, $name, $handler);
-            $definition = new Definition(Logger::class, [
-                'name' => $name,
-                'handlers' => [new Reference($id)]
-            ]);
+            if ($handler['type'] === 'gelf') {
+                $id = $this->buildPublisher($container, $handler);
+                $definition = new Definition(GelfLogger::class, [
+                    'tag' => $handler['gelf_config']['tag'],
+                    'publisher' => new Reference($id)
+
+                ]);
+            } else {
+                $id = $this->buildHandler($container, $name, $handler);
+                $definition = new Definition(Logger::class, [
+                    'name' => $name,
+                    'handlers' => [new Reference($id)]
+                ]);
+            }
             $container->setDefinition(sprintf('cmobi_msf.logger.%s', $name), $definition);
 
             if ($name === 'default') {
@@ -59,6 +69,39 @@ class MonologPass implements CompilerPassInterface
     private function levelToMonologConst($level)
     {
         return is_int($level) ? $level : constant('Monolog\Logger::'.strtoupper($level));
+    }
+
+    private function buildPublisher(ContainerBuilder $container, array $handler)
+    {
+        if (class_exists('Gelf\Transport\UdpTransport')) {
+            $transport = new Definition("Gelf\Transport\UdpTransport", [
+                $handler['gelf_config']['hostname'],
+                $handler['gelf_config']['port'],
+                $handler['gelf_config']['chunk_size'],
+            ]);
+            $transportId = uniqid('monolog.gelf.transport.', true);
+            $transport->setPublic(false);
+            $container->setDefinition($transportId, $transport);
+
+            $publisher = new Definition('Gelf\Publisher', []);
+            $publisher->addMethodCall('addTransport', array(new Reference($transportId)));
+            $publisherId = uniqid('monolog.gelf.publisher.', true);
+            $publisher->setPublic(false);
+            $container->setDefinition($publisherId, $publisher);
+        } elseif (class_exists('Gelf\MessagePublisher')) {
+            $publisher = new Definition('Gelf\MessagePublisher', [
+                $handler['publisher']['hostname'],
+                $handler['publisher']['port'],
+                $handler['publisher']['chunk_size'],
+            ]);
+            $publisherId = uniqid('monolog.gelf.publisher.', true);
+            $publisher->setPublic(false);
+            $container->setDefinition($publisherId, $publisher);
+        } else {
+            throw new \RuntimeException('The gelf handler requires the graylog2/gelf-php package to be installed');
+        }
+
+        return $publisherId;
     }
 
     private function buildHandler(ContainerBuilder $container, $name, array $handler)
@@ -132,6 +175,7 @@ class MonologPass implements CompilerPassInterface
             'console' => 'Symfony\Bridge\Monolog\Handler\ConsoleHandler',
             'rotating_file' => 'Monolog\Handler\RotatingFileHandler',
             'syslog' => 'Monolog\Handler\SyslogHandler',
+            'gelf' => 'Monolog\Handler\GelfHandler',
             'stdout' => 'Cmobi\MicroserviceFrameworkBundle\Logger\StdoutHandler'
         ];
         if (! isset($typeToClassMapping[$handlerType])) {

@@ -22,7 +22,8 @@
         "cmobi/rabbitmq-bundle": "v1.2.13",
         "symfony/process": "^2.8",
         "leaseweb/memcache-bundle": "^2.1",
-        "symfony/monolog-bridge": "^2.8"
+        "symfony/monolog-bridge": "^2.8",
+        "graylog2/gelf-php": "^1.5"
     },
     "require-dev": {
         "symfony/framework-bundle": "~2.8",
