@@ -2,7 +2,6 @@
 
 namespace Cmobi\MicroserviceFrameworkBundle\DependencyInjection;
 
-use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\HealthCheckerServicePass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\JsonExceptionListenerPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\LoggerRawFormatterPass;
 use Cmobi\MicroserviceFrameworkBundle\DependencyInjection\Compiler\LogMicroserviceExceptionListenerPass;
@@ -45,7 +44,6 @@ class MicroserviceFrameworkExtension extends Extension
         $container->addCompilerPass(new SubscriberListenerPass());
         $container->addCompilerPass(new LogMicroserviceExceptionListenerPass());
         $container->addCompilerPass(new JsonExceptionListenerPass());
-        $container->addCompilerPass(new HealthCheckerServicePass());
         /* Compile and lock container */
         $container->compile();
     }

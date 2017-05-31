@@ -8,7 +8,6 @@ class HealthServiceBag
     const STATUS_FAIL = 'Fail';
 
     private $service;
-    private $name;
     private $status;
 
     public function __construct(HealthCheckServiceInterface $service)
@@ -37,7 +36,7 @@ class HealthServiceBag
      */
     public function getName()
     {
-        return $this->name;
+        return $this->service->getName();
     }
 
     /**
